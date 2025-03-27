@@ -1,13 +1,26 @@
-import express from 'express'
-import mongoose from 'mongoose'
+import express from 'express' 
+//Web framework for handling HTTP requests.
+import mongoose from 'mongoose' 
+// ODM (Object-Document Mapping) tool for working with MongoDB
 import cookieParser from 'cookie-parser'
+//Middleware for parsing cookies from incoming requests.
 import bodyParser from 'body-parser'
+//Middleware for parsing JSON request bodies.
 import compression from 'compression'
-import cors from 'cors' //middleware
+//Middleware for compressing HTTP responses (improves performance).
+import cors from 'cors' 
+//Middleware for handling Cross-Origin Resource Sharing (CORS).
 import {router}  from './mongo/routers'
-
+//Handles API routes that interact with a MongoDB database.
 import {routerpg } from './pg/routers'
+//Handles API routes that interact with a PostgreSQL database.
 import { pool } from '../src/pg/users/db'
+//PostgreSQL database connection pool.
+import dotenv from 'dotenv';
+
+
+dotenv.config(); // Load environment variables from .env
+
 
 
 const app = express();
@@ -22,8 +35,8 @@ app.use(cors({
 
 
 //set up mongo
-const mongo_URI = '--';
-//mongoose.connect(mongo_URI);
+const mongo_URI = process.env.MONGO_URI as string;
+mongoose.connect(mongo_URI);
 mongoose.connection.on('error',(err:Error)=> {  //event listener
     console.log(err)
 });
